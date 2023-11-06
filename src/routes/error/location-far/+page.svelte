@@ -1,6 +1,6 @@
 <div class="absolute w-full h-full items-center flex justify-center" id="wrapper">
 	<div class="flex flex-col items-center gap-4">
-		<h1 class="title font-bold text-3xl">Failed to Input Antendance</h1>
+		<h1 class="title font-bold text-2xl">Failed to Input Antendance</h1>
 		<img src="/error/location_far.png" alt="" class="w-36" />
 		<h3 class="font-semibold text-sm">Your location is too far from the office</h3>
 		<button class=" px-7 py-2 bg-red-500 font-semibold text-sm rounded-2xl text-white">

@@ -1,6 +1,6 @@
 <div class="absolute w-full h-full items-center flex justify-center" id="wrapper">
 	<div class="flex flex-col items-center gap-4">
-		<h1 class="title font-bold text-3xl">Failed to Input Antendance</h1>
+		<h1 class="title font-bold text-2xl">Failed to Input Antendance</h1>
 		<img src="/error/already-attended.png" alt="" class="w-36" />
 		<h3 class="font-semibold text-sm">You already attended two times today</h3>
 
