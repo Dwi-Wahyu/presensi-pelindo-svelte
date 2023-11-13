@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model asal {
+  id       String     @id
+  nama     String     @unique
+  tipe     String
+  pengguna pengguna[]
+}
+
+model pengguna {
+  id            String         @id
+  nama          String         @unique
+  status        String
+  jenis_kelamin String
+  kode_unik     Int
+  namaAsal      String?
+  asal          asal?          @relation(fields: [namaAsal], references: [nama])
+  rekapitulasi  rekapitulasi[]
+}
+
+model perizinan {
+  id         String @id
+  nama       String
+  kode_unik  Int
+  tanggal    String
+  keterangan String
+  waktu_izin String
+  status     String
+}
+
+model rekapitulasi {
+  id           String    @id
+  namaPengguna String?
+  waktu_datang String
+  waktu_pulang String
+  tanggal      String
+  status       String
+  kehadiran    String
+  pengguna     pengguna? @relation(fields: [namaPengguna], references: [nama])
+}
+
+model sessions {
+  sid    String   @id(map: "session_pkey") @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
+}
