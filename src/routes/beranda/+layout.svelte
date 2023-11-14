@@ -1,23 +1,56 @@
-<script>
-	import { HouseDoor, PersonBadge, FileEarmarkText, GeoAlt } from 'svelte-bootstrap-icons';
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import {
+		HouseDoor,
+		PersonBadge,
+		FileEarmarkText,
+		GeoAlt,
+		HouseDoorFill,
+		PersonBadgeFill,
+		GeoAltFill,
+		FileEarmarkTextFill
+	} from 'svelte-bootstrap-icons';
+
+	let link = '/beranda';
+
+	function changeLink(linkSelected: string) {
+		link = linkSelected;
+		goto(linkSelected);
+	}
 </script>
 
 <slot />
 
 <nav class="flex justify-center">
 	<div class="flex gap-5 justify-between" id="bubble">
-		<a href="/beranda/">
-			<HouseDoor width={24} height={24} />
-		</a>
-		<a href="/beranda/presensi">
-			<PersonBadge width={24} height={24} />
-		</a>
-		<a href="/beranda/location">
-			<GeoAlt width={24} height={24} />
-		</a>
-		<a href="/beranda/izin">
-			<FileEarmarkText width={24} height={24} />
-		</a>
+		<button on:click={() => changeLink('/beranda')}>
+			{#if link == '/beranda'}
+				<HouseDoorFill width={24} height={24} />
+			{:else}
+				<HouseDoor width={24} height={24} />
+			{/if}
+		</button>
+		<button on:click={() => changeLink('/beranda/presensi')}>
+			{#if link == '/beranda/presensi'}
+				<PersonBadgeFill width={24} height={24} />
+			{:else}
+				<PersonBadge width={24} height={24} />
+			{/if}
+		</button>
+		<button on:click={() => changeLink('/beranda/location')}>
+			{#if link == '/beranda/location'}
+				<GeoAltFill width={24} height={24} />
+			{:else}
+				<GeoAlt width={24} height={24} />
+			{/if}
+		</button>
+		<button on:click={() => changeLink('/beranda/izin')}>
+			{#if link == '/beranda/izin'}
+				<FileEarmarkTextFill width={24} height={24} />
+			{:else}
+				<FileEarmarkText width={24} height={24} />
+			{/if}
+		</button>
 	</div>
 </nav>
 

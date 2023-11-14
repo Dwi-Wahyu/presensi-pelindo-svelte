@@ -1,7 +1,3 @@
-<script>
-	import { PersonCircle } from 'svelte-bootstrap-icons';
-</script>
-
 <div class="w-full h-full absolute bg-gray-100">
 	<div class="h-24 w-full p-3">
 		<div class="p-4 rounded-xl bg-gradient-to-b from-biru to-blue-500">

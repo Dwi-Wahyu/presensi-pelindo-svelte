@@ -4,73 +4,10 @@
 	import moment from 'moment';
 	import 'moment-timezone';
 
+	import toast, { Toaster } from 'svelte-french-toast';
+
 	let isLoading = false;
 	let code: string;
-
-	async function absen(apiUrl: string) {
-		try {
-			const fetchDistance = await fetch(apiUrl, { method: 'GET' });
-			const dataDistance = await fetchDistance.json();
-			const { distance } = dataDistance.rows[0].elements[0];
-			const { text, value } = distance;
-
-			alert(text);
-
-			const absenURL = 'https://presensi-pkl-magang-pelindo.cyclic.app/api/absen';
-			const fetchAbsen = await fetch(absenURL, {
-				method: 'POST',
-				body: JSON.stringify({ code }),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
-
-			const jarakCukup = value < 200;
-
-			if (fetchAbsen.ok && jarakCukup) {
-				goto('/success');
-
-				setExpiration();
-			}
-
-			if (!jarakCukup) {
-				goto('/error/location-far');
-			}
-
-			if (!fetchAbsen.ok && jarakCukup) {
-				const errorAbsen = await fetchAbsen.json();
-				const { message } = errorAbsen;
-
-				if (message == 'Wrong Personal Code') {
-					goto('/error/wrong-code');
-				}
-
-				if (message == 'Please wait several time') {
-					const { waktuAbsen } = errorAbsen;
-
-					goto(`/error/wait/${waktuAbsen}`);
-				}
-
-				if (message == 'You have been attend two times today') {
-					goto('/error/already-attended');
-				}
-			}
-		} catch (error) {
-			console.log(error);
-			alert(error);
-		}
-
-		isLoading = false;
-	}
-
-	function setExpiration() {
-		const newExp = moment();
-
-		newExp.tz('Asia/Makassar');
-		newExp.add(5, 'minute');
-
-		localStorage.setItem('absen', newExp.format('YYYY-MM-DD HH:mm'));
-	}
 
 	async function permissionGranted(position: GeolocationPosition) {
 		const fetchLogin = await fetch('/api/login', {
@@ -88,7 +25,7 @@
 		} else {
 			const errorFetch = await fetchLogin.json();
 
-			alert(errorFetch.message);
+			toast.error(errorFetch.message);
 		}
 
 		isLoading = false;
@@ -104,6 +41,8 @@
 		navigator.geolocation.getCurrentPosition(permissionGranted, permissionRefused);
 	}
 </script>
+
+<Toaster />
 
 <div id="wrapper" class="absolute w-full h-full flex flex-col">
 	<div class="flex h-44 justify-center">

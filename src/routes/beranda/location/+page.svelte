@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { Person } from 'svelte-bootstrap-icons';
 
-	let mapElement;
+	let mapElement: HTMLDivElement;
 	let map;
 
 	async function getLocation(position: GeolocationPosition) {
@@ -47,21 +47,11 @@
 
 	onMount(async () => {
 		refreshLocation();
-
-		setInterval(() => {
-			refreshLocation();
-
-			console.log('Di refresh');
-		}, 10000);
 	});
 </script>
 
 <main>
 	<div bind:this={mapElement} />
-
-	<div class="absolute z-50 bg-black w-full">
-		<Person />
-	</div>
 </main>
 
 <style>
