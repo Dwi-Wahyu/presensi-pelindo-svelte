@@ -1,10 +1,8 @@
-import * as universal from '../entries/pages/error/wait/_waktu_/_page.js';
+
 
 export const index = 6;
 let component_cache;
-export const component = async () => component_cache ??= (await import('../entries/pages/error/wait/_waktu_/_page.svelte.js')).default;
-export { universal };
-export const universal_id = "src/routes/error/wait/[waktu]/+page.js";
-export const imports = ["_app/immutable/nodes/6.fc4b70d5.js","_app/immutable/chunks/scheduler.164e0fef.js","_app/immutable/chunks/index.ad61f886.js"];
-export const stylesheets = ["_app/immutable/assets/3.5814fdec.css"];
+export const component = async () => component_cache ??= (await import('../entries/pages/beranda/izin/buat/_page.svelte.js')).default;
+export const imports = ["_app/immutable/nodes/6.fae44214.js","_app/immutable/chunks/scheduler.2505487f.js","_app/immutable/chunks/index.98bfc95c.js","_app/immutable/chunks/spread.8a54911c.js","_app/immutable/chunks/filepond-plugin-file-validate-size.esm.51124345.js"];
+export const stylesheets = ["_app/immutable/assets/6.c7229fae.css"];
 export const fonts = [];

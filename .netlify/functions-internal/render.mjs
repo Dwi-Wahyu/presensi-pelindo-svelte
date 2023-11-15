@@ -9,10 +9,10 @@ function __memo(fn) {
 return {
 	appDir: "_app",
 	appPath: "_app",
-	assets: new Set(["bg-login.webp","error/already-attended.png","error/location_far.png","error/wait.png","error/warning-location.png","error/wrong_code.png","favicon.png","icon-putih.png","loader/bar.svg","loader/circle-white.svg","logo-pelindo.png","pelindo.png","success.png"]),
-	mimeTypes: {".webp":"image/webp",".png":"image/png",".svg":"image/svg+xml"},
+	assets: new Set(["bg-login.webp","error/already-attended.png","error/location_far.png","error/wait.png","error/warning-location.png","error/wrong_code.png","favicon.png","icon-putih.png","images/gedung-kpo.png","images/kantor-tpm.jpg","loader/bar.svg","loader/circle-white.svg","logo-pelindo.png","pelindo.png","pin/leaf-red.png","pin/user-pin.ico","pin/user-pin.png","success.png","undraw/belum-absen.svg","undraw/profil-pria.svg","undraw/profil-wanita.svg"]),
+	mimeTypes: {".webp":"image/webp",".png":"image/png",".jpg":"image/jpeg",".svg":"image/svg+xml"},
 	_: {
-		client: {"start":"_app/immutable/entry/start.151650af.js","app":"_app/immutable/entry/app.f3f262c0.js","imports":["_app/immutable/entry/start.151650af.js","_app/immutable/chunks/scheduler.164e0fef.js","_app/immutable/chunks/singletons.9755caa9.js","_app/immutable/chunks/index.f1a8ec0d.js","_app/immutable/entry/app.f3f262c0.js","_app/immutable/chunks/scheduler.164e0fef.js","_app/immutable/chunks/index.ad61f886.js"],"stylesheets":[],"fonts":[]},
+		client: {"start":"_app/immutable/entry/start.d5917cd0.js","app":"_app/immutable/entry/app.b3165dbf.js","imports":["_app/immutable/entry/start.d5917cd0.js","_app/immutable/chunks/scheduler.2505487f.js","_app/immutable/chunks/singletons.d906d1d9.js","_app/immutable/entry/app.b3165dbf.js","_app/immutable/chunks/preload-helper.a4192956.js","_app/immutable/chunks/scheduler.2505487f.js","_app/immutable/chunks/index.98bfc95c.js"],"stylesheets":[],"fonts":[]},
 		nodes: [
 			__memo(() => import('../server/nodes/0.js')),
 			__memo(() => import('../server/nodes/1.js')),
@@ -23,63 +23,118 @@ return {
 			__memo(() => import('../server/nodes/6.js')),
 			__memo(() => import('../server/nodes/7.js')),
 			__memo(() => import('../server/nodes/8.js')),
-			__memo(() => import('../server/nodes/9.js'))
+			__memo(() => import('../server/nodes/9.js')),
+			__memo(() => import('../server/nodes/10.js')),
+			__memo(() => import('../server/nodes/11.js')),
+			__memo(() => import('../server/nodes/12.js')),
+			__memo(() => import('../server/nodes/13.js')),
+			__memo(() => import('../server/nodes/14.js')),
+			__memo(() => import('../server/nodes/15.js'))
 		],
 		routes: [
 			{
 				id: "/",
 				pattern: /^\/$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 2 },
+				page: { layouts: [0,], errors: [1,], leaf: 3 },
+				endpoint: null
+			},
+			{
+				id: "/api/izin",
+				pattern: /^\/api\/izin\/?$/,
+				params: [],
+				page: null,
+				endpoint: __memo(() => import('../server/entries/endpoints/api/izin/_server.js'))
+			},
+			{
+				id: "/api/login",
+				pattern: /^\/api\/login\/?$/,
+				params: [],
+				page: null,
+				endpoint: __memo(() => import('../server/entries/endpoints/api/login/_server.js'))
+			},
+			{
+				id: "/beranda",
+				pattern: /^\/beranda\/?$/,
+				params: [],
+				page: { layouts: [0,2,], errors: [1,,], leaf: 4 },
+				endpoint: null
+			},
+			{
+				id: "/beranda/izin",
+				pattern: /^\/beranda\/izin\/?$/,
+				params: [],
+				page: { layouts: [0,2,], errors: [1,,], leaf: 5 },
+				endpoint: null
+			},
+			{
+				id: "/beranda/izin/buat",
+				pattern: /^\/beranda\/izin\/buat\/?$/,
+				params: [],
+				page: { layouts: [0,2,], errors: [1,,], leaf: 6 },
+				endpoint: null
+			},
+			{
+				id: "/beranda/location",
+				pattern: /^\/beranda\/location\/?$/,
+				params: [],
+				page: { layouts: [0,2,], errors: [1,,], leaf: 7 },
+				endpoint: null
+			},
+			{
+				id: "/beranda/presensi",
+				pattern: /^\/beranda\/presensi\/?$/,
+				params: [],
+				page: { layouts: [0,2,], errors: [1,,], leaf: 8 },
 				endpoint: null
 			},
 			{
 				id: "/error/already-attended",
 				pattern: /^\/error\/already-attended\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 3 },
+				page: { layouts: [0,], errors: [1,], leaf: 9 },
 				endpoint: null
 			},
 			{
 				id: "/error/enable-location",
 				pattern: /^\/error\/enable-location\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 4 },
+				page: { layouts: [0,], errors: [1,], leaf: 10 },
 				endpoint: null
 			},
 			{
 				id: "/error/location-far",
 				pattern: /^\/error\/location-far\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 5 },
+				page: { layouts: [0,], errors: [1,], leaf: 11 },
 				endpoint: null
 			},
 			{
 				id: "/error/wait/[waktu]",
 				pattern: /^\/error\/wait\/([^/]+?)\/?$/,
 				params: [{"name":"waktu","optional":false,"rest":false,"chained":false}],
-				page: { layouts: [0,], errors: [1,], leaf: 6 },
+				page: { layouts: [0,], errors: [1,], leaf: 12 },
 				endpoint: null
 			},
 			{
 				id: "/error/wrong-code",
 				pattern: /^\/error\/wrong-code\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 7 },
+				page: { layouts: [0,], errors: [1,], leaf: 13 },
 				endpoint: null
 			},
 			{
-				id: "/izin",
-				pattern: /^\/izin\/?$/,
+				id: "/filepond",
+				pattern: /^\/filepond\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 8 },
+				page: { layouts: [0,], errors: [1,], leaf: 14 },
 				endpoint: null
 			},
 			{
 				id: "/success",
 				pattern: /^\/success\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 9 },
+				page: { layouts: [0,], errors: [1,], leaf: 15 },
 				endpoint: null
 			}
 		],

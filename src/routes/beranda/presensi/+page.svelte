@@ -1,9 +1,14 @@
-<script>
+<script lang="ts">
 	import fotoKantorTPM from '$lib/images/kantor-tpm.jpg';
 	import fotoGedungKPO from '$lib/images/gedung-kpo.png';
-	import { ArrowLeftCircle, ArrowRightCircle } from 'svelte-bootstrap-icons';
+	import { ChevronLeft, ChevronRight } from 'svelte-bootstrap-icons';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	let index = 1;
+
+	let map;
+	let mapElement: HTMLDivElement;
 
 	function decrement() {
 		index -= 1;
@@ -12,68 +17,129 @@
 	function increment() {
 		index += 1;
 	}
-</script>
 
-<div class="w-screen h-screen relative flex flex-col">
-	<div class="from-biru to-blue-400 rounded-b-3xl bg-gradient-to-b h-60 px-5 py-6">
-		<div class="flex w-full items-center justify-between text-white">
-			<button disabled={index == 1} on:click={() => decrement()}>
-				<ArrowLeftCircle width={29} height={29} />
-			</button>
-			<h1 class="text-2xl font-semibold">Lokasi Absen</h1>
-			<button disabled={index == 2} on:click={() => increment()}>
-				<ArrowRightCircle width={29} height={29} />
-			</button>
-		</div>
-	</div>
+	let userPosition: GeolocationPosition;
+	let jarakTPM;
+	let jarakKPO;
 
-	<div class=" absolute flex flex-col gap-3 items-center top-24 w-full">
-		{#if index == 1}
-			<img src={fotoKantorTPM} alt="" id="gambar-lokasi" class="rounded-xl shadow-xl" />
+	const kantorTPM = [-5.12394149298549, 119.40866241584706];
+	const gedungKPO = [-5.131460334959018, 119.40477622945615];
 
-			<div class="w-96">
-				<div class="flex justify-between items-center">
-					<div>
-						<h1 class="font-semibold text-lg">Kantor TPM</h1>
-						<h1>Kantor Terminal Petikemas</h1>
-					</div>
-					<div class="flex flex-col items-center">
-						<h1>Jarak</h1>
-						<h1 class=" text-sm">10 m</h1>
-					</div>
-				</div>
-				<button class="bg-biru w-full py-2 rounded-xl mt-4 text-white font-semibold">Absen</button>
-			</div>
-		{:else}
-			<img src={fotoGedungKPO} alt="" id="gambar-lokasi" class="rounded-xl shadow-xl" />
+	function hitungJarakTPM(position: GeolocationPosition) {
+		const { latitude, longitude } = position.coords;
+		const posisi = [latitude, longitude];
+		const distance = Math.floor(map.distance(kantorTPM, posisi));
 
-			<div class="w-96">
-				<div class="flex justify-between items-center">
-					<div>
-						<h1 class="font-semibold text-lg">Gedung KPO</h1>
-						<h1>Kantor Pengendali pusat</h1>
-					</div>
-					<div class="flex flex-col items-center">
-						<h1>Jarak</h1>
-						<h1 class=" text-sm">10 m</h1>
-					</div>
-				</div>
-				<button class="bg-biru w-full py-2 rounded-xl mt-4 text-white font-semibold">Absen</button>
-			</div>
-		{/if}
-	</div>
-</div>
-
-<style>
-	#gambar-lokasi {
-		width: 24rem;
-		height: 16rem;
+		jarakTPM = distance;
 	}
 
-	/* @media screen and (max-width: 400px) {
-		#gambar-lokasi {
-			width: 20rem;
-			height: 12rem;
+	function hitungJarakKPO(position: GeolocationPosition) {
+		const { latitude, longitude } = position.coords;
+		const posisi = [latitude, longitude];
+		const distance = Math.floor(map.distance(gedungKPO, posisi));
+
+		jarakKPO = distance;
+	}
+
+	function absenTPM() {
+		if (jarakTPM > 150) {
+			alert('Nda bisa absen');
+		} else {
+			alert('Bisa absen');
 		}
-	} */
-</style>
+	}
+
+	function absenKPO() {
+		if (jarakKPO > 150) {
+			alert('Nda bisa absen');
+		} else {
+			alert('Bisa absen');
+		}
+	}
+
+	onMount(() => {
+		navigator.geolocation.getCurrentPosition(
+			async (position) => {
+				userPosition = position;
+
+				const leaflet = await import('leaflet');
+
+				map = leaflet.map(mapElement);
+
+				hitungJarakTPM(position);
+				hitungJarakKPO(position);
+			},
+			(error) => {
+				goto('/error/enable-location');
+			}
+		);
+	});
+</script>
+
+<div bind:this={mapElement} class="hidden" />
+
+<div class="w-screen h-screen relative flex flex-col">
+	<div class="from-biru to-blue-400 rounded-b-3xl bg-gradient-to-b h-64 px-9 py-6">
+		<div class="text-white">
+			<h1 class="text-2xl font-semibold mb-1">Lokasi Absen</h1>
+			<h1>Pilih lokasi absen terdekat dengan lokasi anda</h1>
+		</div>
+
+		{#if index == 1}
+			<div class=" mt-9">
+				<img src={fotoKantorTPM} alt="" class="rounded-xl shadow-lg" />
+			</div>
+		{:else}
+			<div class=" mt-9">
+				<img src={fotoGedungKPO} alt="" class="rounded-xl shadow-lg" />
+			</div>
+		{/if}
+
+		<div class="flex w-full items-center justify-between mt-4">
+			<button disabled={index == 1} on:click={() => decrement()}>
+				{#if index == 1}
+					<ChevronLeft width={26} height={26} class="text-gray-800" />
+				{:else}
+					<ChevronLeft width={26} height={26} />
+				{/if}
+			</button>
+
+			{#if index == 1}
+				<h1 class="text-xl font-semibold">Kantor TPM</h1>
+			{:else}
+				<h1 class="text-xl font-semibold">Gedung KPO</h1>
+			{/if}
+
+			<button disabled={index == 2} on:click={() => increment()}>
+				{#if index == 2}
+					<ChevronRight width={26} height={26} />
+				{:else}
+					<ChevronRight width={26} height={26} class="text-gray-800" />
+				{/if}
+			</button>
+		</div>
+		<div class="mt-2">
+			{#if index == 1}
+				<h1>Kantor Terminal Petikemas</h1>
+				<h1 class="mb-3">Jarak : {jarakTPM} Meter</h1>
+
+				<button
+					class=" w-full text-white font-semibold py-3 bg-gradient-to-r from-biru to-blue-500 rounded-xl"
+					on:click={() => absenTPM()}
+				>
+					Absen
+				</button>
+			{:else}
+				<h1>Kantor Pengendali Pusat</h1>
+				<h1 class="mb-3">Jarak : {jarakKPO} Meter</h1>
+
+				<button
+					class=" w-full text-white font-semibold py-3 bg-gradient-to-r from-biru to-blue-500 rounded-xl"
+					on:click={() => absenKPO()}
+				>
+					Absen
+				</button>
+			{/if}
+		</div>
+	</div>
+</div>

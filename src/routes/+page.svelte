@@ -1,8 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { PeopleFill } from 'svelte-bootstrap-icons';
-	import moment from 'moment';
-	import 'moment-timezone';
 
 	import toast, { Toaster } from 'svelte-french-toast';
 
@@ -84,50 +81,6 @@
 		</form>
 	</div>
 </div>
-
-<!-- <div class="absolute w-full h-full p-5 flex justify-center items-center">
-	<div class="flex flex-col" id="card">
-		<img src="logo-pelindo.png" class="mb-6" alt="" width="270rem" />
-
-		<h1 class="text-[1.75rem] text-biru judul">ABSENSI PKL/MAGANG</h1>
-
-		<div class="mt-6 flex flex-col">
-			<label for="">Insert your personal code</label>
-
-			<form on:submit|preventDefault={handleSubmit}>
-				<div class="relative">
-					<input
-						type="number"
-						name="code"
-						class="border w-full border-biru px-2 ps-9 py-2 rounded mt-2 focus:outline-none"
-						placeholder="PERSONAL CODE"
-						required
-						bind:value={code}
-					/>
-
-					<PeopleFill class="absolute top-5 left-3 text-biru" />
-				</div>
-
-				<div class="flex justify-center items-center flex-col gap-4">
-					<button
-						type="submit"
-						id="submitbtn"
-						class="mt-7 w-full flex justify-center gap-2 items-center bg-biru py-2 border border-biru rounded-2xl text-white shadow-md shadow-biru font-semibold transition-transform hover:scale-95 ease-in-out"
-					>
-						{#if isLoading}
-							<img src="loader/circle-white.svg" alt="" srcset="" width="20rem" />
-							SUBMIT
-						{:else}
-							SUBMIT
-						{/if}
-					</button>
-
-					<a href="/izin" id="izinbtn" class="text-biru">Ajukan izin</a>
-				</div>
-			</form>
-		</div>
-	</div>
-</div> -->
 
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;800&display=swap');

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { Person } from 'svelte-bootstrap-icons';
 
@@ -9,10 +10,6 @@
 	async function getLocation(position: GeolocationPosition) {
 		if (browser) {
 			const leaflet = await import('leaflet');
-
-			var userPin = leaflet.icon({
-				iconUrl: 'pin/user-pin.png'
-			});
 
 			const { latitude, longitude } = position.coords;
 
@@ -42,7 +39,9 @@
 	}
 
 	async function refreshLocation() {
-		navigator.geolocation.getCurrentPosition(getLocation);
+		navigator.geolocation.getCurrentPosition(getLocation, (err) => {
+			goto('/error-page/enable-location');
+		});
 	}
 
 	onMount(async () => {

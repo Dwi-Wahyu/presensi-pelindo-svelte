@@ -1,14 +1,5 @@
 function noop() {
 }
-const identity = (x) => x;
-function assign(tar, src) {
-  for (const k in src)
-    tar[k] = src[k];
-  return (
-    /** @type {T & S} */
-    tar
-  );
-}
 function run(fn) {
   return fn();
 }
@@ -17,6 +8,9 @@ function blank_object() {
 }
 function run_all(fns) {
   fns.forEach(run);
+}
+function is_function(thing) {
+  return typeof thing === "function";
 }
 function safe_not_equal(a, b) {
   return a != a ? b == b : a !== b || a && typeof a === "object" || typeof a === "function";
@@ -52,6 +46,9 @@ function get_current_component() {
   if (!current_component)
     throw new Error("Function called outside component initialization");
   return current_component;
+}
+function onDestroy(fn) {
+  get_current_component().$$.on_destroy.push(fn);
 }
 function setContext(key, context) {
   get_current_component().$$.context.set(key, context);
@@ -247,6 +244,10 @@ function add_attribute(name, value, boolean) {
 function style_object_to_string(style_object) {
   return Object.keys(style_object).filter((key) => style_object[key]).map((key) => `${key}: ${escape_attribute_value(style_object[key])};`).join(" ");
 }
+function add_styles(style_object) {
+  const styles = style_object_to_string(style_object);
+  return styles ? ` style="${styles}"` : "";
+}
 export {
   subscribe as a,
   compute_rest_props as b,
@@ -255,14 +256,17 @@ export {
   escape as e,
   escape_object as f,
   getContext as g,
-  add_attribute as h,
-  get_store_value as i,
-  each as j,
-  assign as k,
-  identity as l,
+  get_store_value as h,
+  add_styles as i,
+  merge_ssr_styles as j,
+  add_attribute as k,
+  each as l,
   missing_component as m,
   noop as n,
-  safe_not_equal as o,
+  onDestroy as o,
+  safe_not_equal as p,
+  is_function as q,
+  run_all as r,
   setContext as s,
   validate_component as v
 };
