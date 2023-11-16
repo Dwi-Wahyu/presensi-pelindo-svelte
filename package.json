@@ -48,6 +48,8 @@
 		"moment-timezone": "^0.5.43",
 		"prisma": "^5.5.2",
 		"svelte-filepond": "^0.2.0",
-		"svelte-french-toast": "^1.2.0"
+		"svelte-french-toast": "^1.2.0",
+		"svelte-loading-spinners": "^0.3.4",
+		"uuid": "^9.0.1"
 	}
 }

@@ -1,5 +1,4 @@
 import prisma from '$lib/prisma.js';
-import { log } from 'console';
 
 export async function POST({ request }) {
 	const reqBody = await request.json();

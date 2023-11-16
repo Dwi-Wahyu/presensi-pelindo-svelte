@@ -8,14 +8,14 @@ datasource db {
 }
 
 model asal {
-  id       String     @id
+  id       String     @id @default(uuid())
   nama     String     @unique
   tipe     String
   pengguna pengguna[]
 }
 
 model pengguna {
-  id            String         @id
+  id            String         @id @default(uuid())
   nama          String         @unique
   status        String
   jenis_kelamin String
@@ -26,17 +26,18 @@ model pengguna {
 }
 
 model perizinan {
-  id         String @id
+  id         String  @id @default(uuid())
   nama       String
   kode_unik  Int
   tanggal    String
   keterangan String
   waktu_izin String
   status     String
+  bukti      String?
 }
 
 model rekapitulasi {
-  id           String    @id
+  id           String    @id @default(uuid())
   namaPengguna String?
   waktu_datang String
   waktu_pulang String

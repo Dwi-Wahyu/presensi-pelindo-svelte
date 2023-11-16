@@ -4,7 +4,12 @@
 		<h1 class="title font-bold text-3xl">SUCCESS</h1>
 		<h3 class="font-semibold text-sm">Your attendance has been submitted</h3>
 
-		<a href="/" class=" px-7 py-2 bg-blue-500 font-semibold text-sm rounded-2xl text-white"> OK </a>
+		<button
+			on:click={() => history.back()}
+			class=" px-7 py-2 bg-blue-500 font-semibold text-sm rounded-2xl text-white"
+		>
+			OK
+		</button>
 	</div>
 </div>
 

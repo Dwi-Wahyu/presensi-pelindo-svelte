@@ -4,6 +4,9 @@
 	import { ChevronLeft, ChevronRight } from 'svelte-bootstrap-icons';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import toast, { Toaster } from 'svelte-french-toast';
+
+	import { RingLoader } from 'svelte-loading-spinners';
 
 	let index = 1;
 
@@ -21,6 +24,7 @@
 	let userPosition: GeolocationPosition;
 	let jarakTPM;
 	let jarakKPO;
+	let isLoading = false;
 
 	const kantorTPM = [-5.12394149298549, 119.40866241584706];
 	const gedungKPO = [-5.131460334959018, 119.40477622945615];
@@ -41,20 +45,68 @@
 		jarakKPO = distance;
 	}
 
-	function absenTPM() {
-		if (jarakTPM > 150) {
-			alert('Nda bisa absen');
+	async function absenTPM() {
+		isLoading = true;
+
+		const fetchAbsen = await fetch('/api/presensi', {
+			method: 'POST',
+			body: JSON.stringify({ code: '80603' }),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		if (fetchAbsen.ok) {
+			goto('/success');
 		} else {
-			alert('Bisa absen');
+			const fetchError = await fetchAbsen.json();
+
+			if (fetchError == 'Anda telah hadir pada hari ini') {
+				goto('/error/already-attended');
+			} else {
+				toast.error(fetchError);
+			}
 		}
+
+		// if (jarakTPM > 150) {
+		// 	alert('Nda bisa absen');
+		// } else {
+		// 	alert('Bisa absen');
+		// }
+
+		isLoading = false;
 	}
 
-	function absenKPO() {
-		if (jarakKPO > 150) {
-			alert('Nda bisa absen');
+	async function absenKPO() {
+		isLoading = true;
+
+		const fetchAbsen = await fetch('/api/presensi', {
+			method: 'POST',
+			body: JSON.stringify({ code: '80603' }),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		if (fetchAbsen.ok) {
+			goto('/success');
 		} else {
-			alert('Bisa absen');
+			const fetchError = await fetchAbsen.json();
+
+			if (fetchError == 'Anda telah hadir pada hari ini') {
+				goto('/error/already-attended');
+			} else {
+				toast.error(fetchError);
+			}
 		}
+
+		// if (jarakKPO > 150) {
+		// 	alert('Nda bisa absen');
+		// } else {
+		// 	alert('Bisa absen');
+		// }
+
+		isLoading = false;
 	}
 
 	onMount(() => {
@@ -77,6 +129,16 @@
 </script>
 
 <div bind:this={mapElement} class="hidden" />
+
+<Toaster />
+
+{#if isLoading}
+	<div class="absolute w-full h-full z-50 flex justify-center items-center">
+		<div class="fixed bottom-24 right-7">
+			<RingLoader size="50" color="red" unit="px" duration="1s" />
+		</div>
+	</div>
+{/if}
 
 <div class="w-screen h-screen relative flex flex-col">
 	<div class="from-biru to-blue-400 rounded-b-3xl bg-gradient-to-b h-64 px-9 py-6">
@@ -143,3 +205,7 @@
 		</div>
 	</div>
 </div>
+
+<!-- {#if isLoading}
+	
+{/if -->

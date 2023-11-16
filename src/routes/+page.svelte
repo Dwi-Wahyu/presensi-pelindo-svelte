@@ -44,11 +44,12 @@
 <div id="wrapper" class="absolute w-full h-full flex flex-col">
 	<div class="flex h-44 justify-center">
 		<div class="flex items-center">
-			<img src="icon-putih.png" class=" w-16" alt="" />
+			<!-- <img src="icon-putih.png" class=" w-16" alt="" />
 			<div class="ml-3">
 				<h1 class="text-white text-5xl font-bold">PELINDO</h1>
 				<h1 class="text-white text-xl mt-1 font-medium">TERMINAL PETIKEMAS</h1>
-			</div>
+			</div> -->
+			<img src="logo-tpm-putih.png" width="260" alt="" />
 		</div>
 	</div>
 	<div id="card" class=" bg-white w-full h-96 py-10 px-11 flex-grow">

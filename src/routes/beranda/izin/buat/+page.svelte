@@ -8,6 +8,9 @@
 	import FilePondPluginValidateType from 'filepond-plugin-file-validate-type';
 	import FilePondPluginValidateSize from 'filepond-plugin-file-validate-size';
 
+	import toast, { Toaster } from 'svelte-french-toast';
+	import { RingLoader } from 'svelte-loading-spinners';
+
 	registerPlugin(
 		FilePondPluginImageExifOrientation,
 		FilePondPluginImagePreview,
@@ -20,6 +23,7 @@
 	let pond;
 
 	let halaman = 'formulir';
+	let isLoading = false;
 
 	function gantiFormulir() {
 		halaman = 'formulir';
@@ -32,8 +36,9 @@
 	async function handleSubmit(e: Event) {
 		const pondFile = pond.getFiles();
 
+		isLoading = true;
+
 		if (pondFile.length) {
-			console.log('ada file');
 			const { file } = pondFile[0];
 
 			const formData = new FormData(e.target);
@@ -45,9 +50,16 @@
 				body: formData
 			});
 
-			console.log(fetchPengajuan);
+			if (fetchPengajuan.ok) {
+				toast.success('Berhasil input pengajuan');
+			} else {
+				const fetchError = await fetchPengajuan.json();
+
+				console.log(fetchError);
+
+				toast.error(fetchError);
+			}
 		} else {
-			console.log('tidada file');
 			const formData = new FormData(e.target);
 
 			const fetchPengajuan = await fetch('/api/izin', {
@@ -55,10 +67,30 @@
 				body: formData
 			});
 
-			console.log(fetchPengajuan);
+			if (fetchPengajuan.ok) {
+				toast.success('Berhasil input pengajuan');
+			} else {
+				const fetchError = await fetchPengajuan.json();
+
+				console.log(fetchError);
+
+				toast.error(fetchError);
+			}
 		}
+
+		isLoading = false;
 	}
 </script>
+
+<Toaster />
+
+{#if isLoading}
+	<div class="absolute w-full h-full z-50 flex justify-center items-center">
+		<div class="fixed bottom-24 right-7">
+			<RingLoader size="50" color="red" unit="px" duration="1s" />
+		</div>
+	</div>
+{/if}
 
 <div class="py-5 px-6">
 	<div class="mb-4 flex items-center gap-3">
@@ -67,11 +99,11 @@
 		</a>
 		<h1 class="text-xl">Pengajuan izin</h1>
 	</div>
-	<div class="w-full flex bg-blue-400 rounded-full">
+	<div class="w-full flex bg-blue-300 rounded-full">
 		{#if halaman == 'formulir'}
 			<button
 				on:click={() => gantiFormulir()}
-				class="text-white text-lg font-semibold py-3 flex-auto bg-biru rounded-full"
+				class="text-white text-lg font-semibold py-3 flex-auto bg-gradient-to-r from-biru to-blue-300 rounded-l-full"
 			>
 				Formulir
 			</button>
@@ -86,7 +118,8 @@
 		{#if halaman == 'aturan'}
 			<button
 				on:click={() => gantiAturan()}
-				class="text-white text-lg font-semibold py-3 flex-auto bg-biru rounded-full">Aturan</button
+				class="text-white text-lg font-semibold py-3 flex-auto bg-gradient-to-l from-biru to-blue-300 rounded-r-full"
+				>Aturan</button
 			>
 		{:else}
 			<button on:click={() => gantiAturan()} class="text-white text-lg font-semibold py-3 flex-auto"
@@ -105,6 +138,7 @@
 						id="tanggal"
 						name="tanggal"
 						class="w-full bg-gray-100 p-3 focus:outline-none rounded shadow-md"
+						required
 					/>
 				</div>
 
@@ -114,6 +148,7 @@
 						class="w-full bg-gray-100 p-3 focus:outline-none rounded shadow-md"
 						name="keterangan"
 						id="keterangan"
+						required
 					>
 						<option value="izin">Izin</option>
 						<option value="sakit">Sakit</option>
@@ -126,6 +161,7 @@
 						id="waktu_izin"
 						name="waktu_izin"
 						class="w-full bg-gray-100 p-3 focus:outline-none rounded shadow-md"
+						required
 					>
 						<option value="datang">Absen Datang</option>
 						<option value="pulang">Absen Pulang</option>
@@ -134,7 +170,7 @@
 				</div>
 
 				<div>
-					<label class="mb-2 block" for="keterangan">Bukti</label>
+					<label class="mb-2 block" for="keterangan">Bukti (opsional)</label>
 
 					<FilePond
 						bind:this={pond}
