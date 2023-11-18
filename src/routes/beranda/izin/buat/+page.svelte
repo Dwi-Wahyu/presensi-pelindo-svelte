@@ -44,6 +44,7 @@
 			const formData = new FormData(e.target);
 
 			formData.set('file', file);
+			formData.set('code', data.user.kode_unik);
 
 			const fetchPengajuan = await fetch('/api/izin', {
 				method: 'POST',
@@ -61,6 +62,8 @@
 			}
 		} else {
 			const formData = new FormData(e.target);
+
+			formData.set('code', data.user.kode_unik);
 
 			const fetchPengajuan = await fetch('/api/izin', {
 				method: 'POST',
@@ -80,6 +83,8 @@
 
 		isLoading = false;
 	}
+
+	export let data;
 </script>
 
 <Toaster />

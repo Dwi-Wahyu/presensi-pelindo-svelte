@@ -10,13 +10,13 @@ moment.tz('Asia/Makassar');
 export async function POST({ request }) {
 	const formData = await request.formData();
 
-	const kode_unik = 80603;
-
 	const code = formData.get('code');
 	const tanggal = formData.get('tanggal');
 	const keterangan = formData.get('keterangan');
 	const waktu_izin = formData.get('waktu_izin');
 	const file = formData.get('file');
+
+	const kode_unik = parseInt(code);
 
 	const pengguna = await prisma.pengguna.findFirst({
 		where: {

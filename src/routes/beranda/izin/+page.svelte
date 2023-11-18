@@ -3,6 +3,8 @@
 
 	import emptyPict from '$lib/images/undraw/empty.svg';
 	import { EnvelopeArrowUp } from 'svelte-bootstrap-icons';
+
+	export let data;
 </script>
 
 <div class="bg-biru z-50 absolute bottom-4" />
@@ -19,11 +21,32 @@
 					<EnvelopeArrowUp width={35} height={35} />
 				</a>
 			</div>
-			<div class="w-full flex justify-center items-center mt-20 flex-col gap-3">
-				<h1 class="mb-3 text-lg">Belum ada Pengajuan</h1>
 
-				<img src={emptyPict} alt="" width="220" />
-			</div>
+			{#if data.daftarIzin.length}
+				<ul class="w-full">
+					{#each data.daftarIzin as izin}
+						<li class="flex mb-4 justify-between items-center border-b pb-2 border-black">
+							<div>
+								<h1>{izin.tanggal}</h1>
+								<p>{izin.keterangan} {izin.waktu_izin}</p>
+							</div>
+							<div
+								class={izin.status == 'Approve'
+									? 'bg-green-500 py-2 px-3 text-white rounded-lg'
+									: 'bg-red-500 py-2 px-3 text-white rounded-lg'}
+							>
+								<h1>{izin.status}</h1>
+							</div>
+						</li>
+					{/each}
+				</ul>
+			{:else}
+				<div class="w-full flex justify-center items-center mt-20 flex-col gap-3">
+					<h1 class="mb-3 text-lg">Belum ada Pengajuan</h1>
+
+					<img src={emptyPict} alt="" width="220" />
+				</div>
+			{/if}
 		</div>
 	</div>
 </div>

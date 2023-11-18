@@ -44,11 +44,6 @@
 <div id="wrapper" class="absolute w-full h-full flex flex-col">
 	<div class="flex h-44 justify-center">
 		<div class="flex items-center">
-			<!-- <img src="icon-putih.png" class=" w-16" alt="" />
-			<div class="ml-3">
-				<h1 class="text-white text-5xl font-bold">PELINDO</h1>
-				<h1 class="text-white text-xl mt-1 font-medium">TERMINAL PETIKEMAS</h1>
-			</div> -->
 			<img src="logo-tpm-putih.png" width="260" alt="" />
 		</div>
 	</div>
@@ -59,7 +54,7 @@
 			<label for="code" class="block mb-3 font-medium">Personal Code</label>
 			<input
 				id="code"
-				type="text"
+				type="number"
 				bind:value={code}
 				class="border px-4 py-3 focus:outline-none focus:shadow-lg w-full rounded shadow"
 				required
@@ -109,23 +104,4 @@
 		font-weight: 600;
 		font-family: 'Montserrat', sans-serif;
 	}
-
-	/* #card {
-		width: 22rem;
-	}
-
-	.judul {
-		font-weight: 800;
-		font-family: 'Montserrat', sans-serif;
-	}
-
-	#submitbtn {
-		font-weight: 600;
-		font-family: 'Montserrat', sans-serif;
-	}
-
-	#izinbtn {
-		font-weight: 500;
-		font-family: 'Montserrat', sans-serif;
-	} */
 </style>

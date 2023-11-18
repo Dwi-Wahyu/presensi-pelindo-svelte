@@ -48,31 +48,29 @@
 	async function absenTPM() {
 		isLoading = true;
 
-		const fetchAbsen = await fetch('/api/presensi', {
-			method: 'POST',
-			body: JSON.stringify({ code: '80603' }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-
-		if (fetchAbsen.ok) {
-			goto('/success');
+		if (jarakTPM > 150) {
+			toast.error('Lokasi anda terlalu jauh');
 		} else {
-			const fetchError = await fetchAbsen.json();
+			const fetchAbsen = await fetch('/api/presensi', {
+				method: 'POST',
+				body: JSON.stringify({ code: data.user.kode_unik }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
 
-			if (fetchError == 'Anda telah hadir pada hari ini') {
-				goto('/error/already-attended');
+			if (fetchAbsen.ok) {
+				goto('/success');
 			} else {
-				toast.error(fetchError);
+				const fetchError = await fetchAbsen.json();
+
+				if (fetchError == 'Anda telah hadir pada hari ini') {
+					goto('/error/already-attended');
+				} else {
+					toast.error(fetchError);
+				}
 			}
 		}
-
-		// if (jarakTPM > 150) {
-		// 	alert('Nda bisa absen');
-		// } else {
-		// 	alert('Bisa absen');
-		// }
 
 		isLoading = false;
 	}
@@ -80,31 +78,29 @@
 	async function absenKPO() {
 		isLoading = true;
 
-		const fetchAbsen = await fetch('/api/presensi', {
-			method: 'POST',
-			body: JSON.stringify({ code: '80603' }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-
-		if (fetchAbsen.ok) {
-			goto('/success');
+		if (jarakKPO > 150) {
+			toast.error('Lokasi anda terlalu jauh');
 		} else {
-			const fetchError = await fetchAbsen.json();
+			const fetchAbsen = await fetch('/api/presensi', {
+				method: 'POST',
+				body: JSON.stringify({ code: data.user.kode_unik }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
 
-			if (fetchError == 'Anda telah hadir pada hari ini') {
-				goto('/error/already-attended');
+			if (fetchAbsen.ok) {
+				goto('/success');
 			} else {
-				toast.error(fetchError);
+				const fetchError = await fetchAbsen.json();
+
+				if (fetchError == 'Anda telah hadir pada hari ini') {
+					goto('/error/already-attended');
+				} else {
+					toast.error(fetchError);
+				}
 			}
 		}
-
-		// if (jarakKPO > 150) {
-		// 	alert('Nda bisa absen');
-		// } else {
-		// 	alert('Bisa absen');
-		// }
 
 		isLoading = false;
 	}
@@ -126,6 +122,8 @@
 			}
 		);
 	});
+
+	export let data;
 </script>
 
 <div bind:this={mapElement} class="hidden" />

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { afterNavigate, goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { redirect } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 	import {
 		HouseDoor,
