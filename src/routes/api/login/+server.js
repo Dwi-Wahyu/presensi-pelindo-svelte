@@ -1,7 +1,8 @@
 import { JWT_KEY } from '$env/static/private';
 import prisma from '$lib/prisma.js';
-import { log } from 'console';
-import * as jwt from 'jsonwebtoken';
+// import * as jwt from 'jsonwebtoken';
+
+import { sign } from 'jsonwebtoken';
 
 export async function POST({ request, cookies }) {
 	const reqBody = await request.json();
@@ -17,7 +18,7 @@ export async function POST({ request, cookies }) {
 	});
 
 	if (cekUser) {
-		const token = jwt.sign(cekUser, JWT_KEY);
+		const token = sign(cekUser, JWT_KEY);
 
 		cookies.set('AuthorizationToken', `Bearer ${token}`, {
 			httpOnly: true,
