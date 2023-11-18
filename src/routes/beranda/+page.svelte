@@ -1,14 +1,4 @@
 <script>
-	import { goto } from '$app/navigation';
-
-	async function logout() {
-		const fetchLogout = await fetch('/beranda/logout');
-
-		if (fetchLogout.ok) {
-			goto('/');
-		}
-	}
-
 	export let data;
 </script>
 
@@ -29,9 +19,7 @@
 			<h1 class="text-lg font-semibold">Anda Belum Absen Hari Ini</h1>
 			<img src="undraw/belum-absen.svg" width="200" alt="" />
 
-			<button class="bg-red-500 px-3 py-2 rounded text-white mt-3" on:click={() => logout()}>
-				logout
-			</button>
+			<a href="/beranda/logout" class="bg-red-500 px-3 py-2 rounded text-white mt-3"> logout </a>
 		</div>
 	</div>
 </div>

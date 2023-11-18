@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 
 	import toast, { Toaster } from 'svelte-french-toast';
+	import { Diamonds } from 'svelte-loading-spinners';
 
 	let isLoading = false;
 	let code: string;
@@ -67,13 +68,14 @@
 				id="submitbtn"
 				class="bg-blue-500 flex duration-300 items-center gap-1 justify-center hover:scale-95 transition-all ease-in-out py-3 w-full rounded-lg mt-5 text-white font-medium"
 			>
-				{#if isLoading}
-					<img src="loader/circle-white.svg" alt="" srcset="" width="20rem" />
-					LOGIN
-				{:else}
-					LOGIN
-				{/if}
+				LOGIN
 			</button>
+
+			{#if isLoading}
+				<div class=" w-full flex justify-center mt-12">
+					<Diamonds size="60" color="rgb(4, 117, 188)" unit="px" duration="1s" />
+				</div>
+			{/if}
 		</form>
 	</div>
 </div>
