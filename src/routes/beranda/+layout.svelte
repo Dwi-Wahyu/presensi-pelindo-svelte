@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { afterNavigate, goto } from '$app/navigation';
+	import { afterNavigate, goto, onNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import {
@@ -12,6 +12,7 @@
 		GeoAltFill,
 		FileEarmarkTextFill
 	} from 'svelte-bootstrap-icons';
+	onNavigate;
 
 	let link = '/beranda';
 
@@ -27,6 +28,17 @@
 		} else {
 			ignoreLayout = false;
 		}
+	});
+
+	onNavigate(() => {
+		if (!document.startViewTransition) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
 	});
 
 	function changeLink(linkSelected: string) {
