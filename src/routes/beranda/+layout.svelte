@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { afterNavigate, goto, onNavigate } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { afterNavigate, goto } from '$app/navigation';
+	import { navigating, page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import {
 		HouseDoor,
@@ -12,7 +12,7 @@
 		GeoAltFill,
 		FileEarmarkTextFill
 	} from 'svelte-bootstrap-icons';
-	onNavigate;
+	import { Circle3 } from 'svelte-loading-spinners';
 
 	let link = '/beranda';
 
@@ -30,17 +30,6 @@
 		}
 	});
 
-	onNavigate(() => {
-		if (!document.startViewTransition) return;
-
-		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
-				resolve();
-				await navigation.complete;
-			});
-		});
-	});
-
 	function changeLink(linkSelected: string) {
 		link = linkSelected;
 		goto(linkSelected);
@@ -54,6 +43,20 @@
 </script>
 
 <slot />
+
+{#if Boolean($navigating)}
+	<div class="fixed w-full h-full z-10">
+		<div class="absolute w-full h-full bg-white opacity-50 z-10" />
+		<div class="absolute w-full h-full flex justify-center items-center z-20">
+			<Circle3
+				ballTopLeft="rgb(4, 117, 188)"
+				ballTopRight="rgb(4, 117, 188)"
+				ballBottomLeft="rgb(4, 117, 188)"
+				ballBottomRight="rgb(4, 117, 188)"
+			/>
+		</div>
+	</div>
+{/if}
 
 {#if !ignoreLayout}
 	<nav class="flex justify-center">

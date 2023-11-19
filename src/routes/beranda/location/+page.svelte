@@ -2,13 +2,12 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import UserPin from '$lib/pin/user-pin.png';
 	import { ArrowClockwise } from 'svelte-bootstrap-icons';
 
 	let mapElement: HTMLDivElement;
 	let map;
 
-	async function getLocation(position: GeolocationPosition) {
+	async function showMap(position: GeolocationPosition) {
 		if (browser) {
 			const leaflet = await import('leaflet');
 
@@ -51,7 +50,7 @@
 	}
 
 	async function refreshLocation() {
-		navigator.geolocation.getCurrentPosition(getLocation, (err) => {
+		navigator.geolocation.getCurrentPosition(showMap, (err) => {
 			goto('/error-page/enable-location');
 		});
 	}
