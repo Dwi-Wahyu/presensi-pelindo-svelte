@@ -43,9 +43,11 @@ export async function POST({ request }) {
 
 		const filePath = `${date}_${pengguna?.nama}`;
 
-		const uploadFile = await supabase.storage.from('bukti_izin').upload(filePath, file);
+		await supabase.storage.from('bukti_izin').upload(filePath, file);
 
-		const inputPengajuan = await prisma.perizinan.create({
+		const { data: uploadedFile } = await supabase.storage.from('bukti_izin').getPublicUrl(filePath);
+
+		await prisma.perizinan.create({
 			data: {
 				kode_unik,
 				nama: pengguna?.nama,
@@ -53,7 +55,7 @@ export async function POST({ request }) {
 				keterangan,
 				waktu_izin,
 				status: 'Belum approve',
-				bukti: filePath
+				bukti: uploadedFile.publicUrl
 			}
 		});
 
@@ -63,7 +65,7 @@ export async function POST({ request }) {
 	if (!file && !cekIzin && !cekAbsen) {
 		const inputPengajuan = await prisma.perizinan.create({
 			data: {
-				kode_unik: 80603,
+				kode_unik,
 				nama: pengguna?.nama,
 				tanggal,
 				keterangan,
@@ -75,6 +77,7 @@ export async function POST({ request }) {
 		return new Response(JSON.stringify('berhasil'));
 	}
 
+	// Todo: perbaiki nanti fungsi update gambar izin
 	if (file && cekIzin && !cekAbsen) {
 		const { waktu_izin: waktu_izin_sebelumnya } = cekIzin;
 
@@ -88,7 +91,13 @@ export async function POST({ request }) {
 			});
 		} else {
 			if (cekIzin.bukti) {
-				await supabase.storage.from('bukti_izin').update(cekIzin.bukti, file);
+				const splitTanggal = tanggal?.split('-');
+				const year = splitTanggal[0];
+				const month = splitTanggal[1];
+				const date = splitTanggal[2];
+				const filePath = `${year}:${month}:${date}_${cekIzin.nama}`;
+
+				await supabase.storage.from('bukti_izin').update(filePath, file);
 			}
 
 			updateIzinSeharian(cekIzin);
@@ -131,9 +140,9 @@ export async function POST({ request }) {
 	}
 
 	if (!file && !cekIzin && cekAbsen && waktu_izin == 'pulang') {
-		const inputPengajuan = await prisma.perizinan.create({
+		await prisma.perizinan.create({
 			data: {
-				kode_unik: 80603,
+				kode_unik,
 				nama: pengguna?.nama,
 				tanggal,
 				keterangan,
@@ -150,17 +159,19 @@ export async function POST({ request }) {
 
 		const filePath = `${date}_${pengguna?.nama}`;
 
-		const uploadFile = await supabase.storage.from('bukti_izin').upload(filePath, file);
+		await supabase.storage.from('bukti_izin').upload(filePath, file);
 
-		const inputPengajuan = await prisma.perizinan.create({
+		const { data: uploadedFile } = await supabase.storage.from('bukti_izin').getPublicUrl(filePath);
+
+		await prisma.perizinan.create({
 			data: {
-				kode_unik: 80603,
+				kode_unik,
 				nama: pengguna?.nama,
 				tanggal,
 				keterangan,
 				waktu_izin,
 				status: 'Belum approve',
-				bukti: filePath
+				bukti: uploadedFile.publicUrl
 			}
 		});
 
@@ -185,7 +196,7 @@ export async function POST({ request }) {
 		if (waktu_izin == 'pulang') {
 			const inputPengajuan = await prisma.perizinan.create({
 				data: {
-					kode_unik: 80603,
+					kode_unik,
 					nama: pengguna?.nama,
 					tanggal,
 					keterangan,
@@ -218,17 +229,21 @@ export async function POST({ request }) {
 
 			const filePath = `${date}_${pengguna?.nama}`;
 
-			const uploadFile = await supabase.storage.from('bukti_izin').upload(filePath, file);
+			await supabase.storage.from('bukti_izin').upload(filePath, file);
 
-			const inputPengajuan = await prisma.perizinan.create({
+			const { data: uploadedFile } = await supabase.storage
+				.from('bukti_izin')
+				.getPublicUrl(filePath);
+
+			await prisma.perizinan.create({
 				data: {
-					kode_unik: 80603,
+					kode_unik,
 					nama: pengguna?.nama,
 					tanggal,
 					keterangan,
 					waktu_izin,
 					status: 'Belum approve',
-					bukti: filePath
+					bukti: uploadedFile.publicUrl
 				}
 			});
 
