@@ -110,7 +110,7 @@
 			if (sekarang.isAfter(waktuBisaAbsen)) {
 				doAbsen();
 
-				localStorage.setItem(`${kode_unik}`, sekarang.format('HH:mm'));
+				localStorage.removeItem(`${kode_unik}`);
 			} else {
 				toast.error('Coba lagi pada ' + waktuBisaAbsen.format('HH:mm'));
 			}
