@@ -4,8 +4,6 @@ import moment from 'moment/moment.js';
 import 'moment-timezone';
 import supabase from '$lib/supabase.js';
 
-moment.tz('Asia/Makassar');
-
 export async function POST({ request }) {
 	const reqBody = await request.json();
 
@@ -13,8 +11,10 @@ export async function POST({ request }) {
 
 	const kode_unik = parseInt(code);
 
-	const tanggal = moment().format('YYYY-MM-DD');
-	const waktu = moment().format('HH:mm');
+	const momentTZ = moment().tz('Asia/Makassar');
+
+	const tanggal = momentTZ.format('YYYY-MM-DD');
+	const waktu = momentTZ.format('HH:mm');
 
 	const pengguna = await prisma.pengguna.findFirst({
 		where: {

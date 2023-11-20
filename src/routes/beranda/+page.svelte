@@ -10,13 +10,13 @@
 					<img src="undraw/profil-pria.svg" alt="" width="50" />
 				</div>
 				<div>
-					<h1 class=" font-bold">Halo {data.user.nama} !</h1>
-					<h1>Selamat datang kembali</h1>
+					<h1 class=" font-bold">{data.user.nama}</h1>
+					<h1>{data.user.namaAsal}</h1>
 				</div>
 			</div>
 		</div>
 		<div class=" mt-4 rounded p-4 flex flex-col items-center gap-3">
-			<h1 class="text-lg font-semibold">Anda Belum Absen Hari Ini</h1>
+			<h1 class="text-lg font-semibold">Soon</h1>
 			<img src="undraw/belum-absen.svg" width="200" alt="" />
 
 			<a href="/beranda/logout" class="bg-red-500 px-3 py-2 rounded text-white mt-3"> logout </a>

@@ -7,6 +7,8 @@
 	import toast, { Toaster } from 'svelte-french-toast';
 
 	import { RingLoader } from 'svelte-loading-spinners';
+	import moment from 'moment';
+	import 'moment-timezone';
 
 	let index = 1;
 
@@ -22,8 +24,8 @@
 	}
 
 	let userPosition: GeolocationPosition;
-	let jarakTPM;
-	let jarakKPO;
+	let jarakTPM: number;
+	let jarakKPO: number;
 	let isLoading = false;
 
 	const kantorTPM = [-5.12394149298549, 119.40866241584706];
@@ -45,64 +47,134 @@
 		jarakKPO = distance;
 	}
 
-	async function absenTPM() {
+	// async function absenTPM() {
+	// 	isLoading = true;
+
+	// 	const sekarang = moment().tz('Asia/Makassar');
+
+	// 	const { kode_unik } = data.user;
+
+	// 	const telahAbsen = localStorage.getItem(`${kode_unik}`);
+	// 	const jarakJauh = jarakTPM > 150;
+
+	// 	if (jarakJauh && !telahAbsen) {
+	// 		toast.error('Jarak minimal 100 meter');
+	// 	}
+
+	// 	if (jarakJauh && telahAbsen) {
+	// 		toast.error('Jarak minimal 100 meter');
+	// 	}
+
+	// 	if (!jarakJauh && telahAbsen) {
+	// 		const waktuBisaAbsen = moment(telahAbsen, 'HH:mm').add(4, 'hour');
+
+	// 		if (sekarang.isAfter(waktuBisaAbsen)) {
+	// 			doAbsen();
+
+	// 			localStorage.setItem(`${kode_unik}`, sekarang.format('HH:mm'));
+	// 		} else {
+	// 			toast.error('Coba lagi pada ' + waktuBisaAbsen.format('HH:mm'));
+	// 		}
+	// 	}
+
+	// 	if (!jarakJauh && !telahAbsen) {
+	// 		doAbsen();
+
+	// 		localStorage.setItem(`${kode_unik}`, sekarang.format('HH:mm'));
+	// 	}
+
+	// 	isLoading = false;
+	// }
+
+	async function absen(jarak: number) {
 		isLoading = true;
 
-		if (jarakTPM > 150) {
-			toast.error('Lokasi anda terlalu jauh');
-		} else {
-			const fetchAbsen = await fetch('/api/presensi', {
-				method: 'POST',
-				body: JSON.stringify({ code: data.user.kode_unik }),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
+		const sekarang = moment().tz('Asia/Makassar');
 
-			if (fetchAbsen.ok) {
-				goto('/success');
+		const { kode_unik } = data.user;
+
+		const telahAbsen = localStorage.getItem(`${kode_unik}`);
+		const jarakJauh = jarak > 150;
+
+		if (jarakJauh && !telahAbsen) {
+			toast.error('Jarak minimal 100 meter');
+		}
+
+		if (jarakJauh && telahAbsen) {
+			toast.error('Jarak minimal 100 meter');
+		}
+
+		if (!jarakJauh && telahAbsen) {
+			const waktuBisaAbsen = moment(telahAbsen, 'HH:mm').add(4, 'hour');
+
+			if (sekarang.isAfter(waktuBisaAbsen)) {
+				doAbsen();
+
+				localStorage.setItem(`${kode_unik}`, sekarang.format('HH:mm'));
 			} else {
-				const fetchError = await fetchAbsen.json();
-
-				if (fetchError == 'Anda telah hadir pada hari ini') {
-					goto('/error/already-attended');
-				} else {
-					toast.error(fetchError);
-				}
+				toast.error('Coba lagi pada ' + waktuBisaAbsen.format('HH:mm'));
 			}
+		}
+
+		if (!jarakJauh && !telahAbsen) {
+			doAbsen();
+
+			localStorage.setItem(`${kode_unik}`, sekarang.format('HH:mm'));
 		}
 
 		isLoading = false;
 	}
 
-	async function absenKPO() {
-		isLoading = true;
+	// async function absenKPO() {
+	// 	isLoading = true;
 
-		if (jarakKPO > 150) {
-			toast.error('Lokasi anda terlalu jauh');
+	// 	if (jarakKPO > 150) {
+	// 		toast.error('Jarak minimal 100 meter');
+	// 	} else {
+	// 		const fetchAbsen = await fetch('/api/presensi', {
+	// 			method: 'POST',
+	// 			body: JSON.stringify({ code: data.user.kode_unik }),
+	// 			headers: {
+	// 				'Content-Type': 'application/json'
+	// 			}
+	// 		});
+
+	// 		if (fetchAbsen.ok) {
+	// 			goto('/success');
+	// 		} else {
+	// 			const fetchError = await fetchAbsen.json();
+
+	// 			if (fetchError == 'Anda telah hadir pada hari ini') {
+	// 				goto('/error/already-attended');
+	// 			} else {
+	// 				toast.error(fetchError);
+	// 			}
+	// 		}
+	// 	}
+
+	// 	isLoading = false;
+	// }
+
+	async function doAbsen() {
+		const fetchAbsen = await fetch('/api/presensi', {
+			method: 'POST',
+			body: JSON.stringify({ code: data.user.kode_unik }),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		if (fetchAbsen.ok) {
+			goto('/success');
 		} else {
-			const fetchAbsen = await fetch('/api/presensi', {
-				method: 'POST',
-				body: JSON.stringify({ code: data.user.kode_unik }),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
+			const fetchError = await fetchAbsen.json();
 
-			if (fetchAbsen.ok) {
-				goto('/success');
+			if (fetchError == 'Anda telah hadir pada hari ini') {
+				goto('/error/already-attended');
 			} else {
-				const fetchError = await fetchAbsen.json();
-
-				if (fetchError == 'Anda telah hadir pada hari ini') {
-					goto('/error/already-attended');
-				} else {
-					toast.error(fetchError);
-				}
+				toast.error(fetchError);
 			}
 		}
-
-		isLoading = false;
 	}
 
 	onMount(() => {
@@ -185,7 +257,7 @@
 
 				<button
 					class=" w-full text-white font-semibold py-3 bg-gradient-to-r from-biru to-blue-500 rounded-xl"
-					on:click={() => absenTPM()}
+					on:click={() => absen(jarakTPM)}
 				>
 					Absen
 				</button>
@@ -195,7 +267,7 @@
 
 				<button
 					class=" w-full text-white font-semibold py-3 bg-gradient-to-r from-biru to-blue-500 rounded-xl"
-					on:click={() => absenKPO()}
+					on:click={() => absen(jarakKPO)}
 				>
 					Absen
 				</button>
@@ -203,7 +275,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- {#if isLoading}
-	
-{/if -->

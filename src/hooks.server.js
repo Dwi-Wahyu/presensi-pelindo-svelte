@@ -1,5 +1,4 @@
 import { JWT_KEY } from '$env/static/private';
-import { log } from 'console';
 import { parse } from 'cookie';
 import prisma from '$lib/prisma';
 import { redirect } from '@sveltejs/kit';
@@ -13,7 +12,30 @@ export const handle = async ({ event, resolve }) => {
 	const { pathname } = event.url;
 
 	if (pathname == '/' && cookies.AuthorizationToken) {
-		throw redirect(301, '/beranda');
+		try {
+			const { AuthorizationToken } = cookies;
+			const secret = new TextEncoder().encode(JWT_KEY);
+
+			const verify = await jwtVerify(AuthorizationToken, secret);
+
+			const { payload } = verify;
+
+			const id = payload.id;
+
+			const cekUser = await prisma.pengguna.findFirst({
+				where: {
+					id
+				}
+			});
+
+			if (!cekUser) {
+				throw redirect(301, '/');
+			} else {
+				throw redirect(301, '/beranda');
+			}
+		} catch (error) {
+			throw redirect(301, '/');
+		}
 	}
 
 	if (pathname.includes('beranda')) {
@@ -36,9 +58,7 @@ export const handle = async ({ event, resolve }) => {
 
 				if (!cekUser) {
 					throw redirect(301, '/');
-				}
-
-				if (cekUser) {
+				} else {
 					event.locals.user = cekUser;
 				}
 			} catch (error) {
