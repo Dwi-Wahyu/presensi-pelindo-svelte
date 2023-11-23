@@ -43,12 +43,12 @@
 <Toaster />
 
 <div id="wrapper" class="absolute w-full h-full flex flex-col">
-	<div class="flex h-44 justify-center">
+	<div class="flex h-40 justify-center">
 		<div class="flex items-center">
 			<img src="logo-tpm-putih.png" width="260" alt="" />
 		</div>
 	</div>
-	<div id="card" class=" bg-white w-full h-96 py-10 px-11 flex-grow">
+	<div id="card" class=" bg-white w-full h-96 p-10 flex-grow">
 		<h1 class="text-center font-bold text-3xl" id="judul">Login</h1>
 		<h3 class="text-center font-semibold mt-3 text-xl" id="subjudul">PRESENSI MAGANG/PKL</h3>
 		<form class="mt-6" on:submit|preventDefault={handleSubmit}>
@@ -70,6 +70,11 @@
 			>
 				LOGIN
 			</button>
+			<div class="w-full text-center mt-24">
+				<a data-sveltekit-preload-code="viewport" href="/register" class="text-sm">
+					Belum punya akun? Register
+				</a>
+			</div>
 
 			{#if isLoading}
 				<div class=" w-full flex justify-center mt-12">

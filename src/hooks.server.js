@@ -4,6 +4,7 @@ import prisma from '$lib/prisma';
 import { redirect } from '@sveltejs/kit';
 
 import { jwtVerify } from 'jose';
+import { log } from 'console';
 
 export const handle = async ({ event, resolve }) => {
 	const { headers } = event.request;
@@ -34,6 +35,8 @@ export const handle = async ({ event, resolve }) => {
 				throw redirect(301, '/beranda');
 			}
 		} catch (error) {
+			log(error);
+
 			throw redirect(301, '/');
 		}
 	}

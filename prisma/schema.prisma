@@ -21,6 +21,7 @@ model pengguna {
   jenis_kelamin String
   kode_unik     Int
   namaAsal      String?
+  pasangan      Int
   asal          asal?          @relation(fields: [namaAsal], references: [nama])
   rekapitulasi  rekapitulasi[]
 }
