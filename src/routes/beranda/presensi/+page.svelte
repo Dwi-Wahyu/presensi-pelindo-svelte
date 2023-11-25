@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ChevronLeft, ChevronRight } from 'svelte-bootstrap-icons';
+	import { ChevronLeft, ChevronRight, ClockHistory } from 'svelte-bootstrap-icons';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import toast, { Toaster } from 'svelte-french-toast';
@@ -50,35 +50,36 @@
 
 		const sekarang = moment().tz('Asia/Makassar');
 
-		const { kode_unik } = data.user;
+		const tanggal = moment().tz('Asia/Makassar').format('YYYY-MM-DD');
 
-		const telahAbsen = localStorage.getItem(`${kode_unik}`);
-		const jarakJauh = jarak > 150;
-
-		if (jarakJauh && !telahAbsen) {
-			toast.error('Jarak minimal 100 meter');
-		}
+		const telahAbsen = localStorage.getItem(tanggal);
+		const jarakJauh = jarak > 100;
 
 		if (jarakJauh && telahAbsen) {
-			toast.error('Jarak minimal 100 meter');
+			toast.error('Jarak minimal 100');
 		}
 
-		if (!jarakJauh && telahAbsen) {
-			const waktuBisaAbsen = moment(telahAbsen, 'HH:mm').add(4, 'hour');
+		if (jarakJauh && !telahAbsen) {
+			toast.error('Jarak minimal 100');
+		}
+
+		if (telahAbsen && !jarakJauh) {
+			const waktuBisaAbsen = moment(telahAbsen, 'HH:mm').add(5, 'minute');
 
 			if (sekarang.isAfter(waktuBisaAbsen)) {
+				localStorage.removeItem(tanggal);
 				doAbsen();
-
-				localStorage.removeItem(`${kode_unik}`);
 			} else {
 				toast.error('Coba lagi pada ' + waktuBisaAbsen.format('HH:mm'));
 			}
 		}
 
-		if (!jarakJauh && !telahAbsen) {
+		if (!telahAbsen && !jarakJauh) {
+			localStorage.clear();
+
 			doAbsen();
 
-			localStorage.setItem(`${kode_unik}`, sekarang.format('HH:mm'));
+			localStorage.setItem(tanggal, sekarang.format('HH:mm'));
 		}
 
 		isLoading = false;
@@ -159,7 +160,7 @@
 		<div class="flex w-full items-center justify-between mt-4">
 			<button disabled={index == 1} on:click={() => decrement()}>
 				{#if index == 1}
-					<ChevronLeft width={26} height={26} class="text-gray-800" />
+					<ChevronLeft width={26} height={26} class="text-gray-500" />
 				{:else}
 					<ChevronLeft width={26} height={26} />
 				{/if}
@@ -173,9 +174,9 @@
 
 			<button disabled={index == 2} on:click={() => increment()}>
 				{#if index == 2}
-					<ChevronRight width={26} height={26} />
+					<ChevronRight width={26} height={26} class="text-gray-500" />
 				{:else}
-					<ChevronRight width={26} height={26} class="text-gray-800" />
+					<ChevronRight width={26} height={26} />
 				{/if}
 			</button>
 		</div>
@@ -184,22 +185,34 @@
 				<h1>Kantor Terminal Petikemas</h1>
 				<h1 class="mb-3">Jarak : {jarakTPM} Meter</h1>
 
-				<button
-					class=" w-full text-white font-semibold py-3 bg-gradient-to-r from-biru to-blue-500 rounded-xl"
-					on:click={() => absen(jarakTPM)}
-				>
-					Absen
-				</button>
+				<div class="flex gap-2">
+					<a href="/beranda/riwayat" class=" bg-biru rounded-xl text-white py-3 px-4">
+						<ClockHistory width="25" height="25" />
+					</a>
+
+					<button
+						class=" w-full text-white font-semibold py-3 bg-gradient-to-r from-biru to-blue-500 rounded-xl"
+						on:click={() => absen(jarakTPM)}
+					>
+						Absen
+					</button>
+				</div>
 			{:else}
 				<h1>Kantor Pengendali Operasional</h1>
 				<h1 class="mb-3">Jarak : {jarakKPO} Meter</h1>
 
-				<button
-					class=" w-full text-white font-semibold py-3 bg-gradient-to-r from-biru to-blue-500 rounded-xl"
-					on:click={() => absen(jarakKPO)}
-				>
-					Absen
-				</button>
+				<div class="flex gap-2">
+					<a href="/beranda/riwayat" class=" bg-biru rounded-xl text-white py-3 px-4">
+						<ClockHistory width="25" height="25" />
+					</a>
+
+					<button
+						class=" w-full text-white font-semibold py-3 bg-gradient-to-r from-biru to-blue-500 rounded-xl"
+						on:click={() => absen(jarakKPO)}
+					>
+						Absen
+					</button>
+				</div>
 			{/if}
 		</div>
 	</div>
