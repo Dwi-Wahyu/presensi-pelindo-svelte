@@ -107,7 +107,10 @@
 					<p class="text-sm">{data.user.status}</p>
 				</div>
 			</div>
-			<a href="/logout" class="border border-white py-2 px-2 rounded-lg flex items-center gap-2">
+			<a
+				href="/beranda/logout"
+				class="border border-white py-2 px-2 rounded-lg flex items-center gap-2"
+			>
 				<Power width="30" height="30" />
 				Logout
 			</a>

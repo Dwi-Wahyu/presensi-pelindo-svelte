@@ -8,6 +8,8 @@
 	let code: string;
 
 	async function permissionGranted(position: GeolocationPosition) {
+		isLoading = true;
+
 		const fetchLogin = await fetch('/api/login', {
 			method: 'POST',
 			body: JSON.stringify({ code }),
@@ -32,27 +34,7 @@
 	}
 
 	async function handleSubmit(e: Event) {
-		isLoading = true;
-
-		const fetchLogin = await fetch('/api/login', {
-			method: 'POST',
-			body: JSON.stringify({ code }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-
-		if (fetchLogin.ok) {
-			goto('/beranda');
-		} else {
-			const errorFetch = await fetchLogin.json();
-
-			toast.error(errorFetch.message);
-		}
-
-		isLoading = false;
-
-		// navigator.geolocation.getCurrentPosition(permissionGranted, permissionRefused);
+		navigator.geolocation.getCurrentPosition(permissionGranted, permissionRefused);
 	}
 </script>
 
