@@ -6,6 +6,10 @@ import { redirect } from '@sveltejs/kit';
 import { jwtVerify } from 'jose';
 import { log } from 'console';
 
+// export const handle = async ({ event, resolve }) => {
+// 	return resolve(event);
+// };
+
 export const handle = async ({ event, resolve }) => {
 	const { headers } = event.request;
 	const cookies = parse(headers.get('cookie') ?? '');
@@ -13,31 +17,23 @@ export const handle = async ({ event, resolve }) => {
 	const { pathname } = event.url;
 
 	if (pathname == '/' && cookies.AuthorizationToken) {
-		try {
-			const { AuthorizationToken } = cookies;
-			const secret = new TextEncoder().encode(JWT_KEY);
+		const { AuthorizationToken } = cookies;
+		const secret = new TextEncoder().encode(JWT_KEY);
 
-			const verify = await jwtVerify(AuthorizationToken, secret);
+		const verify = await jwtVerify(AuthorizationToken, secret);
 
-			const { payload } = verify;
+		const { payload } = verify;
 
-			const id = payload.id;
+		const id = payload.id;
 
-			const cekUser = await prisma.pengguna.findFirst({
-				where: {
-					id
-				}
-			});
-
-			if (!cekUser) {
-				throw redirect(301, '/');
-			} else {
-				throw redirect(301, '/beranda');
+		const cekUser = await prisma.pengguna.findFirst({
+			where: {
+				id
 			}
-		} catch (error) {
-			log(error);
+		});
 
-			throw redirect(301, '/');
+		if (cekUser) {
+			throw redirect(301, '/beranda');
 		}
 	}
 
@@ -61,9 +57,9 @@ export const handle = async ({ event, resolve }) => {
 
 				if (!cekUser) {
 					throw redirect(301, '/');
-				} else {
-					event.locals.user = cekUser;
 				}
+
+				event.locals.user = cekUser;
 			} catch (error) {
 				throw redirect(301, '/');
 			}
@@ -71,39 +67,6 @@ export const handle = async ({ event, resolve }) => {
 			throw redirect(301, '/');
 		}
 	}
-
-	// if (pathname.includes('beranda')) {
-	// 	if (cookies.AuthorizationToken) {
-	// 		const token = cookies.AuthorizationToken.split(' ')[1];
-
-	// 		try {
-	// 			const jwtUser = jwt.verify(token, JWT_KEY);
-
-	// 			const user = await prisma.pengguna.findFirst({
-	// 				where: {
-	// 					kode_unik: jwtUser.kode_unik
-	// 				}
-	// 			});
-
-	// 			if (!user) {
-	// 				throw redirect(301, '/');
-	// 			}
-
-	// 			const sessionUser = {
-	// 				nama: user.nama,
-	// 				jenis_kelamin: user.jenis_kelamin,
-	// 				kode_unik: user.kode_unik,
-	// 				namaAsal: user.namaAsal
-	// 			};
-
-	// 			event.locals.user = sessionUser;
-	// 		} catch (error) {
-	// 			log(error);
-	// 		}
-	// 	} else {
-	// 		throw redirect(301, '/');
-	// 	}
-	// }
 
 	return resolve(event);
 };

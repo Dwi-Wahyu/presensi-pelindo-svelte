@@ -33,9 +33,7 @@
 		goto('/error/enable-location');
 	}
 
-	function handleSubmit(e: Event) {
-		isLoading = true;
-
+	async function handleSubmit(e: Event) {
 		navigator.geolocation.getCurrentPosition(permissionGranted, permissionRefused);
 	}
 </script>

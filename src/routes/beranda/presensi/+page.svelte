@@ -1,6 +1,4 @@
 <script lang="ts">
-	import fotoKantorTPM from '$lib/images/kantor-tpm.jpg';
-	import fotoGedungKPO from '$lib/images/gedung-kpo.png';
 	import { ChevronLeft, ChevronRight } from 'svelte-bootstrap-icons';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -47,45 +45,6 @@
 		jarakKPO = distance;
 	}
 
-	// async function absenTPM() {
-	// 	isLoading = true;
-
-	// 	const sekarang = moment().tz('Asia/Makassar');
-
-	// 	const { kode_unik } = data.user;
-
-	// 	const telahAbsen = localStorage.getItem(`${kode_unik}`);
-	// 	const jarakJauh = jarakTPM > 150;
-
-	// 	if (jarakJauh && !telahAbsen) {
-	// 		toast.error('Jarak minimal 100 meter');
-	// 	}
-
-	// 	if (jarakJauh && telahAbsen) {
-	// 		toast.error('Jarak minimal 100 meter');
-	// 	}
-
-	// 	if (!jarakJauh && telahAbsen) {
-	// 		const waktuBisaAbsen = moment(telahAbsen, 'HH:mm').add(4, 'hour');
-
-	// 		if (sekarang.isAfter(waktuBisaAbsen)) {
-	// 			doAbsen();
-
-	// 			localStorage.setItem(`${kode_unik}`, sekarang.format('HH:mm'));
-	// 		} else {
-	// 			toast.error('Coba lagi pada ' + waktuBisaAbsen.format('HH:mm'));
-	// 		}
-	// 	}
-
-	// 	if (!jarakJauh && !telahAbsen) {
-	// 		doAbsen();
-
-	// 		localStorage.setItem(`${kode_unik}`, sekarang.format('HH:mm'));
-	// 	}
-
-	// 	isLoading = false;
-	// }
-
 	async function absen(jarak: number) {
 		isLoading = true;
 
@@ -124,36 +83,6 @@
 
 		isLoading = false;
 	}
-
-	// async function absenKPO() {
-	// 	isLoading = true;
-
-	// 	if (jarakKPO > 150) {
-	// 		toast.error('Jarak minimal 100 meter');
-	// 	} else {
-	// 		const fetchAbsen = await fetch('/api/presensi', {
-	// 			method: 'POST',
-	// 			body: JSON.stringify({ code: data.user.kode_unik }),
-	// 			headers: {
-	// 				'Content-Type': 'application/json'
-	// 			}
-	// 		});
-
-	// 		if (fetchAbsen.ok) {
-	// 			goto('/success');
-	// 		} else {
-	// 			const fetchError = await fetchAbsen.json();
-
-	// 			if (fetchError == 'Anda telah hadir pada hari ini') {
-	// 				goto('/error/already-attended');
-	// 			} else {
-	// 				toast.error(fetchError);
-	// 			}
-	// 		}
-	// 	}
-
-	// 	isLoading = false;
-	// }
 
 	async function doAbsen() {
 		const fetchAbsen = await fetch('/api/presensi', {
@@ -212,18 +141,18 @@
 
 <div class="w-screen h-screen relative flex flex-col">
 	<div class="from-biru to-blue-400 rounded-b-3xl bg-gradient-to-b h-64 px-9 py-6">
-		<div class="text-white">
+		<div class="text-white mb-12">
 			<h1 class="text-2xl font-semibold mb-1">Lokasi Absen</h1>
 			<h1>Pilih lokasi absen terdekat dengan lokasi anda</h1>
 		</div>
 
 		{#if index == 1}
-			<div class=" mt-9">
-				<img src={fotoKantorTPM} alt="" class="rounded-xl shadow-lg" />
+			<div>
+				<img src="/images/kantor_tpm.jpg" alt="" class="rounded-xl shadow-lg" />
 			</div>
 		{:else}
-			<div class=" mt-9">
-				<img src={fotoGedungKPO} alt="" class="rounded-xl shadow-lg" />
+			<div>
+				<img src="/images/gedung_kpo.png" alt="" class="rounded-xl shadow-lg" />
 			</div>
 		{/if}
 
@@ -262,7 +191,7 @@
 					Absen
 				</button>
 			{:else}
-				<h1>Kantor Pengendali Pusat</h1>
+				<h1>Kantor Pengendali Operasional</h1>
 				<h1 class="mb-3">Jarak : {jarakKPO} Meter</h1>
 
 				<button

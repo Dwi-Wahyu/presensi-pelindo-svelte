@@ -23,9 +23,9 @@ export async function POST({ request, cookies }) {
 		const token = await new SignJWT(cekUser).setProtectedHeader({ alg }).sign(secret);
 
 		cookies.set('AuthorizationToken', token, {
-			httpOnly: true,
 			path: '/',
 			secure: true,
+			httpOnly: true,
 			sameSite: 'strict',
 			maxAge: 60 * 60 * 24
 		});
