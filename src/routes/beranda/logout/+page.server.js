@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
-import { log } from 'console';
 
+/** @type {import('./$types').PageServerLoad} */
 export async function load({ cookies }) {
 	cookies.delete('AuthorizationToken', { path: '/' });
 

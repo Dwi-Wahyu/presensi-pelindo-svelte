@@ -16,8 +16,6 @@
 			}
 		});
 
-		console.log(fetchLogin);
-
 		if (fetchLogin.ok) {
 			goto('/beranda');
 		} else {
@@ -34,7 +32,27 @@
 	}
 
 	async function handleSubmit(e: Event) {
-		navigator.geolocation.getCurrentPosition(permissionGranted, permissionRefused);
+		isLoading = true;
+
+		const fetchLogin = await fetch('/api/login', {
+			method: 'POST',
+			body: JSON.stringify({ code }),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		if (fetchLogin.ok) {
+			goto('/beranda');
+		} else {
+			const errorFetch = await fetchLogin.json();
+
+			toast.error(errorFetch.message);
+		}
+
+		isLoading = false;
+
+		// navigator.geolocation.getCurrentPosition(permissionGranted, permissionRefused);
 	}
 </script>
 
