@@ -70,7 +70,7 @@
 
 <div
 	class:hideSidebar={!$sidebarOpened}
-	class=" w-full z-50 h-screen transition-all duration-500 fixed px-4 py-7 right-0 top-0 bg-gradient-to-b from-biru to-blue-400 text-white"
+	class=" w-full z-50 h-screen transition-all duration-300 fixed px-4 py-7 right-0 top-0 bg-gradient-to-b from-biru to-blue-400 text-white"
 >
 	<div class="flex flex-col items-center">
 		{#if data.user.jenis_kelamin == 'laki laki'}

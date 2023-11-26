@@ -98,11 +98,12 @@
 {/if}
 
 <div class="py-5 px-6">
-	<div class="mb-4 flex items-center gap-3">
+	<div class="mb-5 flex items-center justify-between">
 		<a href="/beranda/izin">
 			<ArrowLeft width={28} height={28} />
 		</a>
 		<h1 class="text-xl">Pengajuan izin</h1>
+		<div />
 	</div>
 	<div class="w-full flex bg-blue-300 rounded-full">
 		{#if halaman == 'formulir'}
@@ -133,7 +134,7 @@
 		{/if}
 	</div>
 
-	<div class="mt-5">
+	<div class="mt-4">
 		{#if halaman == 'formulir'}
 			<form class="flex gap-5 flex-col" on:submit|preventDefault={handleSubmit}>
 				<div>

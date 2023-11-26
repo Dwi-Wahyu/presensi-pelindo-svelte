@@ -50,7 +50,7 @@
 		<h1 class="text-center font-bold text-3xl" id="judul">Login</h1>
 		<h3 class="text-center font-semibold mt-3 text-xl" id="subjudul">PRESENSI MAGANG/PKL</h3>
 		<form class="mt-6" on:submit|preventDefault={handleSubmit}>
-			<label for="code" class="block mb-3 font-medium">Personal Code</label>
+			<label for="code" class="block mb-3 font-medium">Kode Unik</label>
 			<input
 				id="code"
 				type="number"
@@ -68,11 +68,6 @@
 			>
 				LOGIN
 			</button>
-			<div class="w-full text-center mt-24">
-				<a data-sveltekit-preload-code="viewport" href="/register" class="text-sm">
-					Belum punya akun? Register
-				</a>
-			</div>
 
 			{#if isLoading}
 				<div class=" w-full flex justify-center mt-12">
@@ -80,6 +75,11 @@
 				</div>
 			{/if}
 		</form>
+		<div class="w-full fixed bottom-7 left-0 text-center">
+			<a data-sveltekit-preload-code="viewport" href="/register" class="text-sm">
+				Belum punya akun? Register
+			</a>
+		</div>
 	</div>
 </div>
 
