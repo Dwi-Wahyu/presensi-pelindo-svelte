@@ -60,32 +60,21 @@ export async function POST({ request }) {
 		const { waktu_datang, waktu_pulang } = cekAbsen;
 		const telahHadir = waktu_datang != '-' && waktu_pulang != '-';
 
-		const waktuBisaAbsen = moment(waktu_datang, 'HH:mm').add(4, 'hour').tz('Asia/Makassar');
-		const bisaAbsen = momentTZ.isAfter(waktuBisaAbsen);
-
 		if (telahHadir) {
 			return new Response(JSON.stringify('Anda telah hadir pada hari ini'), { status: 400 });
 		}
 
-		if (!bisaAbsen) {
-			return new Response(JSON.stringify(`Coba lagi pada ${waktuBisaAbsen.format('HH:mm')}`), {
-				status: 400
-			});
-		}
+		await prisma.rekapitulasi.update({
+			where: {
+				id: cekAbsen.id
+			},
+			data: {
+				waktu_pulang: waktu,
+				kehadiran: 'Hadir'
+			}
+		});
 
-		if (!telahHadir && bisaAbsen) {
-			await prisma.rekapitulasi.update({
-				where: {
-					id: cekAbsen.id
-				},
-				data: {
-					waktu_pulang: waktu,
-					kehadiran: 'Hadir'
-				}
-			});
-
-			return new Response(JSON.stringify('Berhasil'));
-		}
+		return new Response(JSON.stringify('Berhasil'));
 	}
 
 	if (cekIzin && !cekAbsen && pengguna) {

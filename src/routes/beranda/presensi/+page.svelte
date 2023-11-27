@@ -64,7 +64,7 @@
 		}
 
 		if (telahAbsen && !jarakJauh) {
-			const waktuBisaAbsen = moment(telahAbsen, 'HH:mm').add(5, 'minute');
+			const waktuBisaAbsen = moment(telahAbsen, 'HH:mm').add(4, 'hour');
 
 			if (sekarang.isAfter(waktuBisaAbsen)) {
 				localStorage.removeItem(tanggal);
