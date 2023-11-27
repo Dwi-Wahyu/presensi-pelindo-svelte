@@ -39,7 +39,7 @@ export async function POST({ request }) {
 	});
 
 	if (file && !cekIzin && !cekAbsen) {
-		const date = moment().format('YYYY:MM:DD');
+		const date = moment(tanggal, 'YYYY-MM-DD').format('YYYY:MM:DD');
 
 		const filePath = `${date}_${pengguna?.nama}`;
 
@@ -91,11 +91,8 @@ export async function POST({ request }) {
 			});
 		} else {
 			if (cekIzin.bukti) {
-				const splitTanggal = tanggal?.split('-');
-				const year = splitTanggal[0];
-				const month = splitTanggal[1];
-				const date = splitTanggal[2];
-				const filePath = `${year}:${month}:${date}_${cekIzin.nama}`;
+				const date = moment(tanggal, 'YYYY-MM-DD').format('YYYY:MM:DD');
+				const filePath = `${date}_${cekIzin.nama}`;
 
 				await supabase.storage.from('bukti_izin').update(filePath, file);
 			}
@@ -155,7 +152,7 @@ export async function POST({ request }) {
 	}
 
 	if (file && !cekIzin && cekAbsen && waktu_izin == 'pulang') {
-		const date = moment().format('YYYY:MM:DD');
+		const date = moment(tanggal, 'YYYY-MM-DD').format('YYYY:MM:DD');
 
 		const filePath = `${date}_${pengguna?.nama}`;
 
@@ -261,6 +258,6 @@ export async function POST({ request }) {
 			}
 		});
 
-		log(updateIzin);
+		// log(updateIzin);
 	}
 }
