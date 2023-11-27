@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { afterNavigate, goto } from '$app/navigation';
-	import { navigating, page } from '$app/stores';
+	import { page } from '$app/stores';
 	import { sidebarOpened } from '$lib/stores/sidebar.js';
 	import { onMount } from 'svelte';
 	import {
@@ -20,7 +20,6 @@
 		GenderMale,
 		GenderFemale
 	} from 'svelte-bootstrap-icons';
-	import { Circle3 } from 'svelte-loading-spinners';
 
 	let link = '/beranda';
 
@@ -53,20 +52,6 @@
 </script>
 
 <slot />
-
-{#if Boolean($navigating)}
-	<div class="fixed w-full h-full z-50">
-		<div class="absolute w-full h-full bg-white opacity-50 z-10" />
-		<div class="absolute w-full h-full flex justify-center items-center z-20">
-			<Circle3
-				ballTopLeft="rgb(4, 117, 188)"
-				ballTopRight="rgb(4, 117, 188)"
-				ballBottomLeft="rgb(4, 117, 188)"
-				ballBottomRight="rgb(4, 117, 188)"
-			/>
-		</div>
-	</div>
-{/if}
 
 <div
 	class:hideSidebar={!$sidebarOpened}

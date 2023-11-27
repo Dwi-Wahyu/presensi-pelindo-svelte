@@ -46,11 +46,11 @@
 	}
 
 	async function absen(jarak: number) {
-		isLoading = true;
-
 		const sekarang = moment().tz('Asia/Makassar');
 
 		const tanggal = moment().tz('Asia/Makassar').format('YYYY-MM-DD');
+
+		jarak = 29;
 
 		const telahAbsen = localStorage.getItem(tanggal);
 		const jarakJauh = jarak > 100;
@@ -81,11 +81,11 @@
 
 			localStorage.setItem(tanggal, sekarang.format('HH:mm'));
 		}
-
-		isLoading = false;
 	}
 
 	async function doAbsen() {
+		isLoading = true;
+
 		const fetchAbsen = await fetch('/api/presensi', {
 			method: 'POST',
 			body: JSON.stringify({ code: data.user.kode_unik }),
@@ -105,6 +105,8 @@
 				toast.error(fetchError);
 			}
 		}
+
+		isLoading = false;
 	}
 
 	onMount(() => {
