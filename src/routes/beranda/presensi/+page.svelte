@@ -50,8 +50,6 @@
 
 		const tanggal = moment().tz('Asia/Makassar').format('YYYY-MM-DD');
 
-		jarak = 29;
-
 		const telahAbsen = localStorage.getItem(tanggal);
 		const jarakJauh = jarak > 100;
 
