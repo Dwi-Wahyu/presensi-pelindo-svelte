@@ -8,11 +8,11 @@
 
 	import Select from 'svelte-select';
 
-	let statusItem = [
+	const statusItem = [
 		{ value: 'pkl', label: 'Prakerin/PKL' },
 		{ value: 'magang', label: 'Magang' }
 	];
-	let genderItem = [
+	const genderItem = [
 		{ value: 'laki laki', label: 'Laki laki' },
 		{ value: 'perempuan', label: 'Perempuan' }
 	];

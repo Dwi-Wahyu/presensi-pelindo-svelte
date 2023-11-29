@@ -1,7 +1,39 @@
-<script>
+<script lang="ts">
 	import { ArrowLeft, Calendar2Check, CalendarX } from 'svelte-bootstrap-icons';
+	import { RingLoader } from 'svelte-loading-spinners';
+	import Select from 'svelte-select/Select.svelte';
 
 	export let data;
+
+	let riwayat = data.presensi;
+	let isLoading = false;
+
+	const filterItem = ['1 Minggu Terakhir', 'Semua'];
+
+	async function handleFilter(temp: CustomEvent) {
+		isLoading = true;
+
+		const { value } = temp.detail;
+
+		const bodyJson = {
+			filter: value,
+			nama: data.user.nama
+		};
+
+		const fetchFilter = await fetch(`/api/riwayat`, {
+			method: 'POST',
+			body: JSON.stringify(bodyJson),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		const filterData = await fetchFilter.json();
+
+		riwayat = filterData;
+
+		isLoading = false;
+	}
 </script>
 
 <div class="bg-gray-100 absolute w-full h-screen">
@@ -13,9 +45,19 @@
 		<div />
 	</div>
 
-	<div class="px-5 py-4 flex flex-col gap-2">
+	<div class="px-5 py-3 flex flex-col gap-3">
+		<div class="mb-2">
+			<h1 class="mb-1">Filter Riwayat</h1>
+			<Select
+				items={filterItem}
+				searchable={false}
+				value="Minggu Terakhir"
+				class="shadow"
+				on:change={handleFilter}
+			/>
+		</div>
 		{#if data.presensi.length}
-			{#each data.presensi as item}
+			{#each riwayat as item}
 				<div class="p-4 shadow-md bg-white items-center flex gap-3">
 					{#if item.kehadiran == 'Hadir'}
 						<Calendar2Check width="45" height="45" />
@@ -32,6 +74,12 @@
 			<div class="w-full gap-4 flex flex-col items-center mt-36">
 				<h1 class="text-lg">Belum ada riwayat</h1>
 				<img src="/undraw/empty_riwayat.svg" width="150" alt="" />
+			</div>
+		{/if}
+
+		{#if isLoading}
+			<div class="fixed bottom-10 right-10">
+				<RingLoader size="50" color="red" unit="px" duration="1s" />
 			</div>
 		{/if}
 	</div>
