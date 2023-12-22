@@ -1,14 +1,12 @@
+import getDateInWeek from '$lib/function/getDate';
 import prisma from '$lib/prisma';
 import { log } from 'console';
-import moment from 'moment';
-import 'moment-timezone';
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request, params }) {
 	// @ts-ignore
 	const { filter, nama } = await request.json();
 
-	const bulanSekarang = moment().tz('Asia/Makassar').format('MM');
 	const tanggalMinggu = getDateInWeek();
 
 	const riwayat = [];
@@ -44,19 +42,4 @@ export async function POST({ request, params }) {
 	}
 
 	return new Response(JSON.stringify(riwayat));
-}
-
-function getDateInWeek() {
-	const weekStart = moment().startOf('week');
-	const weekEnd = moment().endOf('week');
-
-	const tanggalMinggu = [];
-
-	while (weekEnd.isAfter(weekStart)) {
-		tanggalMinggu.push(weekEnd.format('YYYY-MM-DD'));
-
-		weekEnd.subtract(1, 'day');
-	}
-
-	return tanggalMinggu;
 }

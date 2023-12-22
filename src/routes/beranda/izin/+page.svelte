@@ -25,7 +25,7 @@
 			{#if data.daftarIzin.length}
 				<ul class="w-full">
 					{#each data.daftarIzin as izin}
-						<li class="flex mb-4 justify-between items-center border-b pb-2 border-black">
+						<li class="flex mb-4 justify-between items-center border-b pb-2 border-gray-400">
 							<div>
 								<h1>{izin.tanggal}</h1>
 								<p>{izin.keterangan} {izin.waktu_izin}</p>
