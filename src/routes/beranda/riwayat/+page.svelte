@@ -1,22 +1,29 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { ArrowLeft, Calendar2Check, CalendarX } from 'svelte-bootstrap-icons';
 	import { RingLoader } from 'svelte-loading-spinners';
 	import Select from 'svelte-select/Select.svelte';
 
 	export let data;
 
-	let riwayat = data.presensi;
+	type Presensi = {
+		id: string;
+		namaPengguna: string;
+		waktu_datang: string;
+		waktu_pulang: string;
+		tanggal: string;
+		status: string;
+		kehadiran: string;
+	};
+
+	let riwayat: Presensi[] = [];
 	let isLoading = false;
 
 	const filterItem = ['1 Minggu Terakhir', 'Semua'];
 
-	async function handleFilter(temp: CustomEvent) {
-		isLoading = true;
-
-		const { value } = temp.detail;
-
+	async function fetchRiwayat(filter: string) {
 		const bodyJson = {
-			filter: value,
+			filter,
 			nama: data.user.nama
 		};
 
@@ -34,6 +41,18 @@
 
 		isLoading = false;
 	}
+
+	async function handleFilter(temp: CustomEvent) {
+		isLoading = true;
+
+		const { value } = temp.detail;
+
+		fetchRiwayat(value);
+	}
+
+	onMount(() => {
+		fetchRiwayat('1 Minggu Terakhir');
+	});
 </script>
 
 <div class="bg-gray-100 absolute w-full h-screen">
