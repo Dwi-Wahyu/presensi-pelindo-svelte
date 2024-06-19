@@ -6,10 +6,6 @@ import { redirect } from '@sveltejs/kit';
 import { jwtVerify } from 'jose';
 import { log } from 'console';
 
-// export const handle = async ({ event, resolve }) => {
-// 	return resolve(event);
-// };
-
 export const handle = async ({ event, resolve }) => {
 	const { headers } = event.request;
 	const cookies = parse(headers.get('cookie') ?? '');
