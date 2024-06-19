@@ -10,7 +10,7 @@
 
 	let index = 1;
 
-	let map;
+	let map: any;
 	let mapElement: HTMLDivElement;
 
 	function decrement() {
@@ -140,7 +140,84 @@
 	</div>
 {/if}
 
-<div class="w-screen h-screen relative flex flex-col">
+<div class="hidden md:flex lg:flex xl:flex 2xl:flex w-screen h-screen relative flex-col">
+	<div class="from-biru to-blue-400 rounded-b-3xl bg-gradient-to-b h-64 px-9 py-6">
+		<div class="text-white mb-12">
+			<h1 class="text-2xl font-semibold mb-1">Lokasi Absen</h1>
+			<h1>Pilih lokasi absen terdekat dengan lokasi anda</h1>
+		</div>
+		<div class="shadow-xl bg-white p-5 rounded-xl mt-14 flex gap-5">
+			{#if index == 1}
+				<img src="/images/kantor_tpm.jpg" alt="" class="rounded-xl shadow-lg w-96" />
+			{:else}
+				<img src="/images/gedung_kpo.png" alt="" class="rounded-xl shadow-lg w-96" />
+			{/if}
+			<div class="flex-grow relative">
+				<div class="flex w-full items-center justify-between mt-1">
+					<button disabled={index == 1} on:click={() => decrement()}>
+						{#if index == 1}
+							<ChevronLeft width={26} height={26} class="text-gray-500" />
+						{:else}
+							<ChevronLeft width={26} height={26} />
+						{/if}
+					</button>
+
+					{#if index == 1}
+						<h1 class="text-xl font-semibold">Kantor TPM</h1>
+					{:else}
+						<h1 class="text-xl font-semibold">Gedung KPO</h1>
+					{/if}
+
+					<button disabled={index == 2} on:click={() => increment()}>
+						{#if index == 2}
+							<ChevronRight width={26} height={26} class="text-gray-500" />
+						{:else}
+							<ChevronRight width={26} height={26} />
+						{/if}
+					</button>
+				</div>
+
+				<div class="mt-2">
+					{#if index == 1}
+						<h1>Kantor Terminal Petikemas</h1>
+						<h1 class="mb-3">Jarak : {jarakTPM} Meter</h1>
+
+						<div class="flex gap-2 absolute bottom-0 right-0 w-full">
+							<a href="/beranda/riwayat" class=" bg-biru rounded-xl text-white py-3 px-4">
+								<ClockHistory width="25" height="25" />
+							</a>
+
+							<button
+								class=" w-full text-white font-semibold py-3 bg-gradient-to-r from-biru to-blue-500 rounded-xl"
+								on:click={() => absen(jarakTPM)}
+							>
+								Absen
+							</button>
+						</div>
+					{:else}
+						<h1>Kantor Pengendali Operasional</h1>
+						<h1 class="mb-3">Jarak : {jarakKPO} Meter</h1>
+
+						<div class="flex gap-2 absolute bottom-0 w-full">
+							<a href="/beranda/riwayat" class=" bg-biru rounded-xl text-white py-3 px-4">
+								<ClockHistory width="25" height="25" />
+							</a>
+
+							<button
+								class=" w-full text-white font-semibold py-3 bg-gradient-to-r from-biru to-blue-500 rounded-xl"
+								on:click={() => absen(jarakKPO)}
+							>
+								Absen
+							</button>
+						</div>
+					{/if}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="flex md:hidden lg:hidden xl:hidden 2xl:hidden w-screen h-screen relative flex-col">
 	<div class="from-biru to-blue-400 rounded-b-3xl bg-gradient-to-b h-64 px-9 py-6">
 		<div class="text-white mb-12">
 			<h1 class="text-2xl font-semibold mb-1">Lokasi Absen</h1>
